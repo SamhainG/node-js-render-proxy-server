@@ -1,0 +1,22 @@
+{ if @data?.length : }
+    { for item in @data : }
+        <div class="item">
+            <a class="photo" href="{= item.href }">
+                <img src="{= item.photo }">
+            </a>
+            <dl class="subscribe-item">
+                <dt class="title">
+                    <a title="{= item.href }" href="{= item.href }">
+                        {- item.name }
+                    </a>
+                </dt>
+                <dd class="rows">
+                    {- item.rubric_name }
+                </dd>
+                <dd class="rows price">
+                    <strong class="green">{- item.price }</strong>
+                </dd>
+            </dl>
+        </div>
+    { end }
+{ end }
