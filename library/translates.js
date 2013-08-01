@@ -1,5 +1,4 @@
-var query = require('./query'),
-    config = require('config'),
+var config = require('config'),
     file = require('./file'),
     translates = {};
 
@@ -49,28 +48,17 @@ function _getTranslates(lang_code, cb) {
         translates[lang_code] = require(translates_file_dir + translates_file_name);
         cb();
     } else {
-        var qs = config.multilanguage.database_query(lang_code);;
-        query(qs, function (err, rows, fields) {
+        config.multilanguage.getTranslates(lang_code, function(err, translates_obj){
             if (err) throw err;
-            if (typeof cb === 'function') {
-                if (rows) {
-                    rows.forEach(function (row, index, array) {
-                        translates[lang_code][row['word']] = row['text'];
-                    });
-                    file.files(translates_file_dir, function(files){
-                        files.forEach(function(file_name){
-                            if(file_name.indexOf(current_hour) < 0){
-                                file.removeFile(translates_file_dir+file_name);
-                            }
-                        });
-                        file.save(translates_file_dir, translates_file_name, JSON.stringify(translates[lang_code]));
-                        cb();
-                    });
-                } else {
-                    throw new Error('No words found by lang_code \'' + lang_code + '\'');
-                }
-            }
-        });
-
+            file.files(translates_file_dir, function(files){
+                files.forEach(function(file_name){
+                    if(file_name.indexOf(current_hour) < 0){
+                        file.removeFile(translates_file_dir+file_name);
+                    }
+                });
+                file.save(translates_file_dir, translates_file_name, JSON.stringify(translates_obj));
+                cb();
+            });
+        })
     }
 }

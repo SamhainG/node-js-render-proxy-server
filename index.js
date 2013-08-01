@@ -72,6 +72,14 @@ generateTemplates(function () {
         config.proxy_settings
     ).listen(config.server_settings.listen);
 
+
+    http.createServer(function (req, res) {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+            "response" : "world"
+        }));
+    }).listen(3001);
+
     server.proxy.on('start', function(req, res, next){
         delete req.headers['accept-encoding'];
     });

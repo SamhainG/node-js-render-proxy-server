@@ -39,8 +39,16 @@ module.exports = {
             "4" : "ukr"
         },
         "query_param" : "lang_code",
-        "database_query" : function(lang_code){
-            return "SELECT * FROM some_table WHERE lang_code='"+lang_code+"'";
+        "getTranslates" : function(lang_code, cb){
+            if(typeof cb === 'function')
+                cb(null ,{
+                    "ru" : {
+                        "hello" : "Привет"
+                    },
+                    "ukr" : {
+                        "hello" : "Привiт"
+                    }
+                }[lang_code]);
         }
     },
     "database" : {
